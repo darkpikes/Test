@@ -23,53 +23,83 @@ namespace ProductTest.Controllers
         [Route("products")]
         public List<ProductDTO> Get()
         {
+            try
+            {
+                var result = _service.GetAll();
+                if (result.Count == 0) { throw new Exception("No Results"); }
+                return result;
+            }
 
-            var result = _service.GetAll();
-            if (result.Count == 0) { throw new Exception("No Results"); }
-            return result;
+            catch (Exception ex)
+            {
+                throw new Exception("Bad Request");
+            }
 
-            
+
         }
 
         [HttpGet()]
         [Route("product")]
         public ProductDTO Get(int UPC)
         {
+            try
+            {
+                var result = _service.GetProduct(UPC);
+                if (result == null) { throw new Exception("Not Found"); }
+                return result;
+            }
 
-            var result = _service.GetProduct(UPC);
-
-            if(result == null) { throw new Exception("Not Found"); }
-
-
-            return result;
-
+            catch (Exception ex)
+            {
+                throw new Exception("Bad Request");
+            }
 
         }
 
         [HttpPost()]
         public ProductDTO Create(ProductInsertDTO product)
         {
+            try
+            {
+                var result = _service.InsertProduct(product);
+                if (result == null) { throw new Exception("Cannot create product"); }
+                return result;
+            }
 
-            var result = _service.InsertProduct(product);
-            if (result == null) { throw new Exception("Cannot create product"); }
-
-            return result;
+            catch (Exception ex)
+            {
+                throw new Exception("Bad Request");
+            }
         }
 
         [HttpPut()]
         public ProductDTO Edit(ProductDTO product)
         {
+            try
+            {
+                var result = _service.EditProduct(product);
+                if (result == null) { throw new Exception("Cannot found product"); }
+                return result;
+            }
 
-            var result = _service.EditProduct(product);
-            if (result == null) { throw new Exception("Cannot found product"); }
-
-            return result;
+            catch (Exception ex)
+            {
+                throw new Exception("Bad Request");
+            }
         }
 
         [HttpDelete()]
         public void Delete(int product)
         {
-             _service.DeleteProduct(product);
+            try
+            {
+                _service.DeleteProduct(product);
+            }
+
+            catch (Exception ex)
+            {
+                throw new Exception("Bad Request");
+            }
         }
     }
 }
